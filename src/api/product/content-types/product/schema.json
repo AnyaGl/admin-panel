@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -17,10 +17,10 @@
       "required": true
     },
     "tariffs": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::tariff.tariff",
-      "mappedBy": "product"
+      "type": "component",
+      "repeatable": true,
+      "component": "product-info.tariff",
+      "required": true
     }
   }
 }

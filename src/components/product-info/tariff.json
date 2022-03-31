@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_product_info_tariffs",
+  "info": {
+    "displayName": "tariff",
+    "icon": "window-maximize",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "maximum_licenses_count": {
+      "type": "integer",
+      "required": true
+    },
+    "order": {
+      "type": "integer",
+      "required": true
+    },
+    "tariff_variants": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product-info.tariff-variant",
+      "required": true
+    }
+  }
+}
