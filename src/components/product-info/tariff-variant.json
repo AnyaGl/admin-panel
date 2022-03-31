@@ -7,24 +7,22 @@
   },
   "options": {},
   "attributes": {
-    "price": {
-      "type": "float",
-      "required": false
-    },
-    "period": {
-      "type": "enumeration",
-      "enum": [
-        "year",
-        "month"
-      ],
-      "required": true
-    },
     "ops_json": {
       "type": "json",
       "required": true
     },
     "discount": {
-      "type": "integer"
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "period": {
+      "type": "enumeration",
+      "enum": [
+        "month",
+        "year"
+      ],
+      "required": true
     }
   }
 }

@@ -23,11 +23,22 @@
       "type": "integer",
       "required": true
     },
+    "unit_price": {
+      "type": "float",
+      "required": true
+    },
+    "unit_period": {
+      "type": "enumeration",
+      "enum": [
+        "month"
+      ],
+      "required": true,
+      "default": "month"
+    },
     "tariff_variants": {
       "type": "component",
       "repeatable": true,
-      "component": "product-info.tariff-variant",
-      "required": true
+      "component": "product-info.tariff-variant"
     }
   }
 }
