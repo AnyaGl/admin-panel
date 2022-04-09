@@ -1,14 +1,17 @@
 const rabbit = require("../../../../rabbit"); 
 
 function createProductJson(data) {
+  const productData = {
+    id: data.id,
+    name: data.name,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+    tariffs: data.tariffs
+  }
+  const product = strapi.service('api::product.product').convertProduct(productData);
+  
   return {
-    product: {
-      id: data.id,
-      name: data.name,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-      tariffs: data.tariffs
-    }
+    product: product
   };
 }
 
