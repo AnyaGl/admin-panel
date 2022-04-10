@@ -16,6 +16,9 @@
       "type": "string",
       "required": true
     },
+    "widjet": {
+      "type": "text"
+    },
     "tariffs": {
       "type": "component",
       "repeatable": true,
