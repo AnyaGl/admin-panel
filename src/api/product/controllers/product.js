@@ -34,7 +34,7 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
 
     async findTariff(ctx) {
         const id = ctx.params.id;
-        var tariff = await strapi.db.connection.raw(`SELECT * FROM components_product_info_tariffs WHERE id = ${id}`)
+        var tariff = await strapi.db.connection.raw(`SELECT * FROM product.components_product_info_tariffs WHERE id = ${id}`)
         .then(r => {
             return r.rows[0];
         });
@@ -44,8 +44,8 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
         }
         
         await strapi.db.connection.raw(`SELECT t1.* 
-            FROM components_product_info_tariff_variants AS t1
-            LEFT JOIN components_product_info_tariffs_components AS t2
+            FROM product.components_product_info_tariff_variants AS t1
+            LEFT JOIN product.components_product_info_tariffs_components AS t2
             ON t2.component_id = t1.id
             WHERE t2.entity_id = ${id}`)
         .then (r => {
@@ -53,7 +53,7 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
         });
 
         return strapi.db.connection.raw(`SELECT t1.entity_id 
-            FROM products_components AS t1
+            FROM product.products_components AS t1
             WHERE t1.component_id = ${id}`)
         .then (r => {
             return strapi.service('api::product.product').convertTariff(tariff, r.rows[0].entity_id); 
@@ -63,7 +63,7 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
 
     async findTariffVariant(ctx) {
         const id = ctx.params.id;
-        var tariffVariant = await strapi.db.connection.raw(`SELECT * FROM components_product_info_tariff_variants WHERE id = ${id}`)
+        var tariffVariant = await strapi.db.connection.raw(`SELECT * FROM product.components_product_info_tariff_variants WHERE id = ${id}`)
         .then(r => {
             return r.rows[0];
         });
@@ -73,8 +73,8 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
         }
         
         return strapi.db.connection.raw(`SELECT t1.unit_price, t1.id 
-            FROM components_product_info_tariffs AS t1
-            LEFT JOIN components_product_info_tariffs_components AS t2
+            FROM product.components_product_info_tariffs AS t1
+            LEFT JOIN product.components_product_info_tariffs_components AS t2
             ON t2.entity_id = t1.id
             WHERE t2.component_id = ${id}`)
         .then (r => {
