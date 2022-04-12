@@ -37,6 +37,6 @@ jobs:
         username: student
         password: egEdmXr8jD
         script: |
-            docker stop frontend
+            docker stop product
             docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/product 
-            docker run --rm -d -p 6540:1337 --name frontend ${{ secrets.DOCKER_HUB_USERNAME }}/product 
+            docker run --rm -d -p 6540:1337 --name product ${{ secrets.DOCKER_HUB_USERNAME }}/product 
