@@ -1,7 +1,7 @@
 FROM strapi/base:14
-WORKDIR /opt/so
+WORKDIR /app
 COPY . .
 RUN npm install
 RUN npm run build
-EXPOSE 1337
+EXPOSE 6540
 CMD ["npm", "run", "start"] 
