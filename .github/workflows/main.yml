@@ -33,10 +33,11 @@ jobs:
      - name: executing remote ssh commands using password
        uses: appleboy/ssh-action@master
        with:
-        host: testvm.plotpad.ru
-        username: student
-        password: egEdmXr8jD
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.PASSWORD }}
         script: |
-            docker stop product
-            docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/product 
-            docker run --rm -d -p 6540:6540 --name product ${{ secrets.DOCKER_HUB_USERNAME }}/product 
+            cd /home/student/compose
+            docker-compose down
+            docker-compose images rm ${{ secrets.DOCKER_HUB_USERNAME }}/product
+            docker-compose up -d
