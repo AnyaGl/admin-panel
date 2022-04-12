@@ -39,4 +39,4 @@ jobs:
         script: |
             docker stop product
             docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/product 
-            docker run --rm -d -p 6540:1337 --name product ${{ secrets.DOCKER_HUB_USERNAME }}/product 
+            docker run --rm -d -p 6540:6540 --name product ${{ secrets.DOCKER_HUB_USERNAME }}/product 
