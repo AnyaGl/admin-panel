@@ -39,4 +39,4 @@ jobs:
         script: |
             docker stop frontend
             docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/product 
-            docker run --rm -d -p 1337:8080 --name frontend ${{ secrets.DOCKER_HUB_USERNAME }}/product 
+            docker run --rm -d -p 6540:1337 --name frontend ${{ secrets.DOCKER_HUB_USERNAME }}/product 
