@@ -1,4 +1,6 @@
 const amqp = require('amqplib');
+const { v4: uuidv4 } = require('uuid');
+
 /**
  * @var {Promise<MessageBroker>}
  */
@@ -19,9 +21,21 @@ class MessageBroker {
    * Initialize connection to rabbitMQ
    */
   async init() {
-    this.connection = await amqp.connect(process.env.RABBITMQ_URL || 'amqp://localhost');
-    this.channel = await this.connection.createChannel();
-    return this
+    try {
+      this.connection = await amqp.connect(process.env.RABBITMQ_URL || 'amqp://localhost');
+      this.channel = await this.connection.createChannel();      
+    } catch (error) {
+      throw "Cannot init broker";      
+    }
+    return this;
+  }
+
+  wrapMsg(msg)
+  {
+    return {
+      uuid: uuidv4(),
+      data: msg
+    };
   }
 
   /**
@@ -34,7 +48,7 @@ class MessageBroker {
       await this.init();
     }
     await this.channel.assertQueue(queue, {durable: true});
-    this.channel.sendToQueue(queue, msg)
+    this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(this.wrapMsg(msg))));
   }
 
   /**
@@ -75,11 +89,15 @@ class MessageBroker {
  * @return {Promise<MessageBroker>}
  */
 MessageBroker.getInstance = async function() {
-  if (!instance) {
-    const broker = new MessageBroker();
-    instance = broker.init()
+  try {
+    if (!instance) {  
+      const broker = new MessageBroker();
+      instance = broker.init()  
+    }  
+  } catch (error) {
+    instance = null;
   }
-  return instance;
+  return instance;  
 };
 
 module.exports = MessageBroker;

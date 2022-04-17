@@ -22,15 +22,16 @@ function getWidjetCode(id) {
 </script>`
 }
 
+var needSendUpdateMsg = true;
+
 module.exports = {
 
   async afterCreate(event) {
     const product = createProductJson(event.result);
     const broker = await rabbit.getInstance();
-    await broker.send('product_service:product.created', Buffer.from(JSON.stringify(product)));
+    broker && broker.send('product_service:product.created', product);    
     needSendUpdateMsg = false;
-    await strapi.query('api::product.product').update({where: {id: product.product.id}, data: {widjet: getWidjetCode(product.product.id)}});
-
+    strapi.query('api::product.product').update({where: {id: product.product.id}, data: {widjet: getWidjetCode(product.product.id)}});
   },
 
   async afterUpdate(event) {
@@ -38,7 +39,7 @@ module.exports = {
     {
       const product = createProductJson(event.result);
       const broker = await rabbit.getInstance();
-      await broker.send('product_service:product.updated', Buffer.from(JSON.stringify(product)));
+      broker && broker.send('product_service:product.updated', product);
     }
     needSendUpdateMsg = true;
   }, 
@@ -48,6 +49,6 @@ module.exports = {
       product_id: event.params.where.id
     };
     const broker = await rabbit.getInstance();
-    await broker.send('product_service:product.deleted', Buffer.from(JSON.stringify(productId)));
+    broker && broker.send('product_service:product.deleted', productId);
   },
 };
