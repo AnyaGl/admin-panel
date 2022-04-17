@@ -38,7 +38,12 @@
     "tariff_variants": {
       "type": "component",
       "repeatable": true,
-      "component": "product-info.tariff-variant"
+      "component": "product-info.tariff-variant",
+      "required": true
+    },
+    "ops_json": {
+      "type": "json",
+      "required": true
     }
   }
 }

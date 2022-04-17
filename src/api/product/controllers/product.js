@@ -1,4 +1,5 @@
-'use strict';                                          
+'use strict';  
+const merge = require('deepmerge-json');                                        
 
 /**
  *  product controller
@@ -12,7 +13,8 @@ function createProductJson(data) {
       name: data.attributes.name,
       createdAt: data.attributes.createdAt,
       updatedAt: data.attributes.updatedAt,
-      tariffs: data.attributes.tariffs
+      tariffs: data.attributes.tariffs,
+      ops_json: data.attributes.ops_json
     }
     return strapi.service('api::product.product').convertProduct(productData);
 }
@@ -52,11 +54,13 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
             tariff.tariff_variants = r.rows;
         });
 
-        return strapi.db.connection.raw(`SELECT t1.entity_id 
+        return strapi.db.connection.raw(`SELECT t1.entity_id, t2.ops_json AS product_json
             FROM product.products_components AS t1
+            INNER JOIN product.products AS t2
+            ON t1.entity_id = t2.id
             WHERE t1.component_id = ${id}`)
         .then (r => {
-            return strapi.service('api::product.product').convertTariff(tariff, r.rows[0].entity_id); 
+            return strapi.service('api::product.product').convertTariff(tariff, r.rows[0].entity_id, r.rows[0].product_json); 
         });
         
     },    
@@ -71,14 +75,19 @@ module.exports = createCoreController('api::product.product', ({strapi}) => ({
         {
             return {error: "Вариант тарифа не найден"};
         }
-        
-        return strapi.db.connection.raw(`SELECT t1.unit_price, t1.id 
+
+        return strapi.db.connection.raw(`SELECT t1.unit_price, t1.id, t1.ops_json AS tariff_json, t4.ops_json AS product_json
             FROM product.components_product_info_tariffs AS t1
-            LEFT JOIN product.components_product_info_tariffs_components AS t2
+            INNER JOIN product.components_product_info_tariffs_components AS t2
             ON t2.entity_id = t1.id
+            INNER JOIN product.products_components AS t3
+            ON t1.id = t3.component_id
+            INNER JOIN product.products AS t4
+            ON t4.id = t3.entity_id
             WHERE t2.component_id = ${id}`)
         .then (r => {
-            return strapi.service('api::product.product').convertTariffVariant(r.rows[0].unit_price, tariffVariant, r.rows[0].id); 
+            const json = merge(r.rows[0].product_json, r.rows[0].tariff_json);
+            return strapi.service('api::product.product').convertTariffVariant(r.rows[0].unit_price, tariffVariant, r.rows[0].id, json); 
         }, error => { 
             return error; 
         });

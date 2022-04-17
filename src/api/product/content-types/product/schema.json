@@ -24,6 +24,10 @@
       "repeatable": true,
       "component": "product-info.tariff",
       "required": true
+    },
+    "ops_json": {
+      "type": "json",
+      "required": true
     }
   }
 }

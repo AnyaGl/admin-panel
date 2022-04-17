@@ -6,7 +6,8 @@ function createProductJson(data) {
     name: data.name,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
-    tariffs: data.tariffs
+    tariffs: data.tariffs,
+    ops_json: data.ops_json
   }
   const product = strapi.service('api::product.product').convertProduct(productData);
   
