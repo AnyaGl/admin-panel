@@ -17,15 +17,18 @@
     },
     "maximum_licenses_count": {
       "type": "integer",
-      "required": true
+      "required": true,
+      "min": 1
     },
     "order": {
       "type": "integer",
-      "required": true
+      "required": true,
+      "min": 1
     },
     "unit_price": {
       "type": "float",
-      "required": true
+      "required": true,
+      "min": 0
     },
     "unit_period": {
       "type": "enumeration",
