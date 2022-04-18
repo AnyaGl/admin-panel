@@ -16,10 +16,10 @@ function createProductJson(data) {
   };
 }
 
-function getWidjetCode(id) {
+function getWidgetCode(id) {
   return `<div class="saas_shop_tariffs" data-product_id="${id}"></div>
 <script>
-  saas_shop_create_tariffs(${id});
+  widgetSaasShop.init(${id});
 </script>`
 }
 
@@ -32,7 +32,7 @@ module.exports = {
     const broker = await rabbit.getInstance();
     broker && broker.send('product_service:product.created', product);    
     needSendUpdateMsg = false;
-    strapi.query('api::product.product').update({where: {id: product.product.id}, data: {widjet: getWidjetCode(product.product.id)}});
+    strapi.query('api::product.product').update({where: {id: product.product.id}, data: {widget: getWidgetCode(product.product.id)}});
   },
 
   async afterUpdate(event) {
