@@ -4,5 +4,5 @@ module.exports = ({ env }) => ({
   app: {
     keys: env.array('APP_KEYS'),
   },
-  url: 'http://testvm.plotpad.ru/service/product/',
+  url: env('APP_ROOT_URL', 'http://testvm.plotpad.ru/service/product/'),
 });
